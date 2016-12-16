@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>百度一下，你就知道</title>
+	<style type="text/css">
+		body{
+			padding: 0;
+			margin: 0;
+			background-image:url(img/bg.jpg);
+			background-size: cover;
+			background-repeat: no-repeat;
+		}
+		#ad_sample{
+			width: 320px;
+			position: absolute;
+			top: 350px;
+			left: 20px;
+			background-size: cover;
+			height: 80px;
+			overflow: hidden;
+			-webkit-transition-duration:1s;
+			background-image: url('img/zitaibig.jpg'); 
+			background-size: 320px 568px;
+			background-position: 0 -80px;
+			background-color: white;
+			background-repeat: no-repeat;
+		}
+		#car_body{
+			width: 150px;
+			height: 64px;
+			position: absolute;
+			background-image: url(img/car01.png);
+			background-size: cover;
+			top: 15px;
+			right: 10px;
+			-webkit-transition-duration:1s;
+		}
+		.tyre{
+			width: 24px;
+			height: 24px;
+			bottom: 2px;
+			background-size: cover;
+			-webkit-transition-duration:2s;
+		}
+		#car_tyre01{
+			position: absolute;
+			background-image: url(img/car02.png);
+			left: 19px;
+			
+		}
+		#car_tyre02{
+			position: absolute;
+			background-image: url(img/car03.png);
+			right: 18px;
+		}
+		.car_go{
+			-webkit-transform:translate(200px,0);
+		}
+		.car_go #car_tyre01{
+			-webkit-transform:rotate(270deg);
+		}
+		.car_go #car_tyre02{
+			-webkit-transform:rotate(180deg);
+			-webkit-animation-delay:.5s;
+		}
+		#h5_container{
+			border: none;
+			display: none;
+			-webkit-transition-duration:1s;
+		}
+	</style>
+</head>
+<body>
+	<iframe id="h5_container"></iframe>
+	<div id="ad_sample">
+		<div id="car_body">
+			<div id="car_tyre01" class="tyre"></div>
+			<div id="car_tyre02" class="tyre"></div>
+		</div>
+	</div>
+</body>
+<script>
+	(function(){
+		var adSample = document.getElementById('ad_sample');
+		var carBody = document.getElementById('car_body');
+		var adExpand = document.getElementById('ad_expand');
+		var h5Container = document.getElementById('h5_container');
+		h5Container.style.width = window.screen.width + 'px';
+		h5Container.style.height = window.screen.height + 'px';
+		h5Container.setAttribute('src','http://jing.baidu.com/h5/superframeTest.html');
+		var clickEvt = "ontouchstart" in document ? "touchstart":"mousedown";
+		adSample.addEventListener(clickEvt,function(){
+			carBody.className = "car_go";
+			setTimeout(function(){
+				adSample.style.left = 0;
+				adSample.style.top = 0;
+				adSample.style.width = window.screen.width + 'px';
+				adSample.style.height = window.screen.height+'px';
+				adSample.style.backgroundSize = window.screen.width + 'px ' + window.screen.height+'px';
+				adSample.style.backgroundPosition ='0 0';
+				setTimeout(function(){
+					h5Container.style.display = 'block';
+					setTimeout(function(){
+						adSample.style.display = 'none';
+					},200);
+				},1000);
+			},300);
+		},false);
+	})();
+</script>
+</html>

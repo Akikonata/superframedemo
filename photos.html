@@ -1,0 +1,103 @@
+<style>
+.pic{
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: cover;
+    position: absolute;
+    left: 0;
+    top: 0;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.swipe-left{
+    -webkit-animation-name: swipe-left;
+    -webkit-animation-duration: 0.5s;  
+    animation-name: swipe-left;
+    animation-duration: 0.5s;
+}
+ 
+@-webkit-keyframes swipe-left{
+    100% {
+      -webkit-transform: translate3d(-600px, 50px, 0) rotate(-30deg);
+      transform: translate3d(-600px, 50px, 0) rotate(-30deg);
+    }
+}
+
+.swipe-right{
+    -webkit-animation-name: swipe-right;
+    -webkit-animation-duration: 0.5s;  
+    animation-name: swipe-right;
+    animation-duration: 0.5s;
+}
+ 
+@-webkit-keyframes swipe-right{
+    100% {
+      -webkit-transform: translate3d(600px, 50px, 0) rotate(30deg);
+      transform: translate3d(600px, 50px, 0) rotate(30deg);
+    }
+}
+</style>
+<script>
+
+legend.onApiReady = function(){
+
+    var picsArr = [
+            'http://c.hiphotos.baidu.com/fex/pic/item/377adab44aed2e7301f6ce238e01a18b87d6faa6.jpg',
+            'http://b.hiphotos.baidu.com/fex/pic/item/b151f8198618367aaf57c5d227738bd4b21ce5e7.jpg',
+            'http://a.hiphotos.baidu.com/fex/pic/item/b999a9014c086e064564b4440b087bf40bd1cbf5.jpg',
+            'http://b.hiphotos.baidu.com/fex/pic/item/71cf3bc79f3df8dc242e7e9ec411728b471028aa.jpg',
+        ];
+
+
+    function find(name){
+        return legend.getComponentsByName(name)[0].trailerElement;
+    }
+
+    // 首页相册滑动
+    
+    // 图片位置初始化
+    var zIndex = 1000 - picsArr.length;
+
+    var $picsContainer = $(find('pics'));
+    var picHtml = picsArr.map(function(p, i){
+        var selectedClass = i == 0 ? 'selected' : '';
+
+        var layer = 1000 - i;
+        var transform = 'translate3d(0,0,0) rotate(' + parseInt(5 - Math.random() * 7) + 'deg)';
+        var opacity = i == 0 ? 1 : 0.5;
+        
+        return '<div class="pic pic' + i + '" style="background-image:url(' + p + ');z-index:' + layer + ';-webkit-transform:' + transform + ';"></div>';
+    }).join('');
+
+    $picsContainer.html(picHtml).css({
+        overflow: 'visible'
+    });
+
+    // 手势滑动
+    var tq = 0;
+    var $swipeMask = $(find('swipe-mask')).css('z-index', 1001);
+    function swipe(dir){
+        $('.pic' + tq).addClass('swipe-' + dir);
+        tq++;
+        tq %= picsArr.length;
+
+    }
+    $swipeMask
+    .on('swipeLeft', function(){
+        swipe('left');
+    })
+    .on('swipeRight', function(){
+        swipe('right');
+    });
+    $('.pic').on('webkitAnimationEnd', function(){
+        $(this).css({
+            'z-index': (--zIndex)
+        }).removeClass('swipe-left').removeClass('swipe-right');
+    });
+};
+
+
+</script>
